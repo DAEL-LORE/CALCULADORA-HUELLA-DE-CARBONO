@@ -1,0 +1,126 @@
+/* Paleta de Colores Vívida */
+:root {
+    --color-primary-vivid: #008080; /* Teal/Verde Oscuro - Sidebar, Botones Primarios */
+    --color-secondary-vivid: #ff6347; /* Rojo/Naranja - Advertencias, botones secundarios */
+    --color-success-vivid: #3cb371; /* Verde Menta - Éxito, Consejos */
+    --color-info-vivid: #4682b4; /* Azul Acero - Información */
+    --color-warning-vivid: #ffd700; /* Dorado - Energía, Moderado */
+    --color-light-bg: #f4f6f9; 
+    --color-dark-vivid: #333333;
+    --sidebar-width: 15rem; 
+    --font-family: 'Poppins', sans-serif; 
+}
+
+/* ======================================================================
+   ESTILOS GENERALES Y LAYOUT
+   ====================================================================== */
+body {
+    font-family: var(--font-family); 
+    background-color: var(--color-light-bg); 
+    overflow-x: hidden; 
+}
+
+/* Clases de Color Vívidas */
+.text-primary-vivid { color: var(--color-primary-vivid) !important; }
+.text-success-vivid { color: var(--color-success-vivid) !important; }
+.text-danger-vivid { color: var(--color-secondary-vivid) !important; }
+.text-info-vivid { color: var(--color-info-vivid) !important; }
+.text-warning-vivid { color: var(--color-warning-vivid) !important; }
+
+/* Fondo y Sidebar */
+.bg-gradient-vivid { 
+    background: linear-gradient(180deg, var(--color-primary-vivid) 0%, #004d4d 100%); 
+}
+.border-bottom-vivid { border-color: rgba(255, 255, 255, 0.2) !important; }
+.list-group-item-action:hover {
+    background-color: #004d4d !important;
+}
+.list-group-item.active {
+    background-color: #004d4d !important; 
+    border-color: #004d4d !important;
+}
+
+/* Layout y Toggle */
+.wrapper {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+}
+#sidebar-wrapper {
+    position: fixed; 
+    left: calc(-1 * var(--sidebar-width)); 
+    top: 0;
+    min-height: 100vh; 
+    width: var(--sidebar-width); 
+    transition: all .25s ease-out;
+    z-index: 1030; 
+}
+#page-content-wrapper { 
+    width: 100%; 
+    min-width: 0; 
+    transition: margin-left .25s ease-out;
+}
+.wrapper.toggled #sidebar-wrapper { left: 0; }
+
+@media (min-width: 992px) {
+    #sidebar-wrapper { position: sticky; left: 0; }
+    #page-content-wrapper { margin-left: var(--sidebar-width); }
+    .wrapper.toggled #sidebar-wrapper { left: calc(-1 * var(--sidebar-width)); }
+    .wrapper.toggled #page-content-wrapper { margin-left: 0; }
+}
+
+/* Ocultar y Transición del Test (CLAVE para la transición) */
+.hidden { display: none !important; }
+#apartados-form .tab-pane { transition: opacity 0.5s ease-in-out; }
+
+/* ======================================================================
+   ESTILOS DE BOTONES Y FORMULARIOS (CLAVE: Para que tengan color)
+   ====================================================================== */
+
+/* Botones de Acción Principales (Login, Siguiente) */
+.btn-primary-vivid, .btn-success-vivid, .btn-secondary-vivid {
+    font-weight: 600;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+.btn-primary-vivid { background-color: var(--color-primary-vivid); border-color: var(--color-primary-vivid); color: white; }
+.btn-primary-vivid:hover { background-color: #004d4d; border-color: #004d4d; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0, 128, 128, 0.5); }
+
+.btn-success-vivid { background-color: var(--color-success-vivid); border-color: var(--color-success-vivid); color: white; }
+.btn-success-vivid:hover { background-color: #2e8b57; border-color: #2e8b57; box-shadow: 0 4px 10px rgba(60, 179, 113, 0.5); }
+
+.btn-secondary-vivid { background-color: var(--color-secondary-vivid); border-color: var(--color-secondary-vivid); color: white; }
+.btn-secondary-vivid:hover { background-color: #cc4f36; border-color: #cc4f36; }
+
+
+/* Botones de Selección del Test (SÍ/NO/Tipo de Gas) */
+.btn-select-vivid {
+    background-color: #ffffff;
+    color: var(--color-dark-vivid);
+    border: 1px solid #ddd;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+.btn-select-vivid:hover { border-color: var(--color-primary-vivid); }
+.btn-select-vivid.active {
+    background-color: var(--color-primary-vivid) !important;
+    color: white !important;
+    border-color: var(--color-primary-vivid) !important;
+    box-shadow: 0 4px 8px rgba(0, 128, 128, 0.3);
+    transform: scale(1.02);
+}
+
+/* Estilos de Cards (Test y Consejos) */
+.card-input-vivid { border-left: 5px solid var(--color-primary-vivid); border-radius: 10px; transition: box-shadow 0.3s; background-color: #ffffff; }
+.card-select-vivid { cursor: pointer; border: 2px solid #e9ecef; border-radius: 10px; transition: all 0.3s; }
+.card-select-vivid.active { border-color: var(--color-success-vivid); background-color: #f0fff0; box-shadow: 0 6px 12px rgba(60, 179, 113, 0.3); }
+.card-recommendation { border: 1px solid #e0e0e0; border-radius: 10px; transition: transform 0.3s, box-shadow 0.3s; background-color: #ffffff; }
+.card-recommendation:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); }
+
+/* Alertas y Métricas (Para que no se vean muertos) */
+.alert-danger-vivid { background-color: #fcebeb; color: var(--color-secondary-vivid); border-color: #f9d8d8; }
+.alert-warning-vivid { background-color: #fffde7; color: var(--color-warning-vivid); border-color: #fff9c4; }
+.alert-success-vivid { background-color: #e6f9ed; color: var(--color-success-vivid); border-color: #c7eed5; }
+.card-metric-total { background: linear-gradient(45deg, #fff 50%, rgba(255, 99, 71, 0.1) 100%); border: none; border-radius: 12px; border-left: 5px solid var(--color-secondary-vivid); }
+.card-metric-secondary { background: linear-gradient(45deg, #fff 50%, rgba(70, 130, 180, 0.1) 100%); border: none; border-radius: 12px; border-left: 5px solid var(--color-info-vivid); }

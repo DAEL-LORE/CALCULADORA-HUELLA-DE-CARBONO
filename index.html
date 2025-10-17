@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Huella de Carbono Perú - ODS 🌎</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+
+    <div class="modal fade" id="welcomeModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="welcomeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg modal-login-style"> 
+                <div class="modal-header bg-success-vivid text-white border-0">
+                    <h5 class="modal-title" id="welcomeModalLabel"><i class="fas fa-hand-holding-heart me-2"></i> ¡Calcula tu Huella!</h5>
+                </div>
+                <div class="modal-body text-center p-4">
+                    <i class="fas fa-seedling fa-5x text-success-vivid mb-4 animate__animated animate__pulse animate__infinite"></i>
+                    <h4 class="mb-4 text-primary-vivid font-italic">Sé parte del cambio, mide tu impacto.</h4>
+                    <div class="mb-3">
+                        <label for="userName" class="form-label fw-bold"><i class="fas fa-user-circle"></i> Tu Nombre:</label>
+                        <input type="text" class="form-control form-control-lg input-login-style" id="userName" placeholder="Ej: Alex o María" required>
+                    </div>
+                    <button type="button" class="btn btn-primary-vivid w-100 btn-animated-login" id="startBtn"><i class="fas fa-play me-2"></i> Empezar Test</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="wrapper hidden" id="wrapper">
+        
+        <div class="bg-gradient-vivid border-end" id="sidebar-wrapper">
+            <div class="sidebar-heading text-white p-3 border-bottom-vivid">
+                <i class="fas fa-leaf me-2"></i> HC Perú <span class="fw-bold" id="sidebarUserName"></span>
+            </div>
+            <div class="list-group list-group-flush">
+                <a href="#calculadora-section" class="list-group-item list-group-item-action bg-transparent text-white active"><i class="fas fa-calculator me-2"></i> Mi Calculadora</a>
+                <a href="#resultados-section" class="list-group-item list-group-item-action bg-transparent text-white"><i class="fas fa-chart-line me-2"></i> Mis Resultados</a>
+                <a href="#recomendaciones-section" class="list-group-item list-group-item-action bg-transparent text-white"><i class="fas fa-lightbulb me-2"></i> Consejos Verdes</a>
+            </div>
+        </div>
+        
+        <div id="page-content-wrapper">
+            <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm">
+                <div class="container-fluid">
+                    <button class="btn btn-outline-secondary" id="sidebarToggle"><i class="fas fa-bars"></i></button>
+                    <div class="d-flex align-items-center ms-auto">
+                        <span class="fw-bold me-2 text-primary-vivid">Hola, <span id="navUserName">Invitado</span>!</span> 
+                        <i class="fas fa-seedling fa-lg text-success-vivid"></i>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="container py-4"> 
+                
+                <h1 class="mt-4 mb-4 text-center text-primary-vivid fw-bold"><i class="fas fa-sun me-2"></i> Test de Huella de Carbono Familiar</h1>
+                
+                <section id="calculadora-section" class="mb-5">
+                    <div class="card shadow-lg p-4 bg-white">
+                        <h2 class="card-title text-success-vivid mb-4 border-bottom pb-2"><i class="fas fa-edit me-2"></i> Ingresa tus Consumos</h2>
+                        
+                        <form id="calculadoraForm">
+                            <div id="apartados-form">
+                                
+                                <div class="tab-pane active" data-tab="1">
+                                    <h3 class="text-info-vivid mb-4"><i class="fas fa-house-chimney me-2"></i> 1. Datos del Hogar y Gas</h3>
+                                    
+                                    <div class="row mb-4">
+                                        <div class="col-md-6 mb-3">
+                                            <div class="card card-input-vivid p-3 h-100">
+                                                <label for="personas" class="form-label fw-bold"><i class="fas fa-users me-2"></i> Personas en el hogar:</label>
+                                                <input type="number" id="personas" class="form-control form-control-lg" value="3" min="1" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <div class="card card-input-vivid p-3 h-100">
+                                                <label for="agua" class="form-label fw-bold"><i class="fas fa-faucet-drip me-2"></i> Consumo de Agua ($m^3$/mes):</label>
+                                                <input type="number" id="agua" class="form-control form-control-lg" value="15" min="0" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <p class="form-label fw-bold mt-3"><i class="fas fa-fire me-2"></i> Tipo de Gas:</p>
+                                    <div class="row" id="tipo_gas_buttons">
+                                        <div class="col-md-4 mb-2"><button type="button" class="btn btn-lg btn-select-vivid w-100 active" data-gas-type="glp" data-bs-toggle="button" autocomplete="off"><i class="fas fa-gas-pump me-2"></i> Balón GLP</button></div>
+                                        <div class="col-md-4 mb-2"><button type="button" class="btn btn-lg btn-select-vivid w-100" data-gas-type="gnv" data-bs-toggle="button" autocomplete="off"><i class="fas fa-map-pin me-2"></i> Gas Natural</button></div>
+                                        <div class="col-md-4 mb-2"><button type="button" class="btn btn-lg btn-select-vivid w-100" data-gas-type="no" data-bs-toggle="button" autocomplete="off"><i class="fas fa-ban me-2"></i> No Usan</button></div>
+                                    </div>
+
+                                    <div id="gas_glp_group" class="mb-4 mt-3 card card-input-vivid p-3">
+                                        <label for="glp" class="form-label fw-bold"><i class="fas fa-weight-hanging me-2"></i> Balones de GLP (10kg) que usan al mes:</label>
+                                        <input type="number" id="glp" class="form-control form-control-lg" value="1" min="0" step="0.1" required>
+                                    </div>
+                                    <div id="gas_gnv_group" class="mb-4 hidden mt-3 card card-input-vivid p-3">
+                                        <label for="gnv" class="form-label fw-bold"><i class="fas fa-tachometer-alt me-2"></i> Consumo de Gas Natural ($m^3$) al mes:</label>
+                                        <input type="number" id="gnv" class="form-control form-control-lg" value="15" min="0" step="0.1" required>
+                                    </div>
+
+                                    <button type="button" class="btn btn-primary-vivid float-end btn-animated-step" onclick="nextTab(2)">Siguiente <i class="fas fa-arrow-right"></i></button>
+                                </div>
+
+                                <div class="tab-pane hidden" data-tab="2">
+                                    <h3 class="text-warning-vivid mb-4"><i class="fas fa-plug me-2"></i> 2. Consumo Eléctrico</h3>
+
+                                    <div class="row mb-4">
+                                        <div class="col-md-6 mb-3">
+                                            <div class="card card-input-vivid p-3 h-100">
+                                                <label for="electricidad_directo" class="form-label fw-bold"><i class="fas fa-receipt me-2"></i> Consumo mensual (kWh) [Opcional]:</label>
+                                                <input type="number" id="electricidad_directo" class="form-control form-control-lg" placeholder="Ej: 150" value="0" min="0">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <div class="card card-input-vivid p-3 h-100">
+                                                <label for="aparatos_alto" class="form-label fw-bold"><i class="fas fa-desktop me-2"></i> Aparatos de **ALTO** consumo (PC, Refri antigua):</label>
+                                                <input type="number" id="aparatos_alto" class="form-control form-control-lg" value="3" min="0">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <p class="form-label fw-bold mt-3"><i class="fas fa-solar-panel me-2"></i> ¿Usas Paneles Solares?</p>
+                                    <div class="row">
+                                        <div class="col-6"><button type="button" class="btn btn-lg btn-select-vivid w-100" data-solar="si" data-bs-toggle="button" autocomplete="off"><i class="fas fa-check-circle me-2"></i> Sí</button></div>
+                                        <div class="col-6"><button type="button" class="btn btn-lg btn-select-vivid w-100 active" data-solar="no" data-bs-toggle="button" autocomplete="off"><i class="fas fa-times-circle me-2"></i> No</button></div>
+                                    </div>
+                                    
+                                    <button type="button" class="btn btn-secondary-vivid btn-animated-step mt-4" onclick="nextTab(1)"><i class="fas fa-arrow-left"></i> Anterior</button>
+                                    <button type="button" class="btn btn-primary-vivid float-end btn-animated-step mt-4" onclick="nextTab(3)">Siguiente <i class="fas fa-arrow-right"></i></button>
+                                </div>
+
+                                <div class="tab-pane hidden" data-tab="3">
+                                    <h3 class="text-danger-vivid mb-4"><i class="fas fa-route me-2"></i> 3. Movilidad y Vehículos</h3>
+                                    
+                                    <p class="form-label fw-bold mt-3"><i class="fas fa-car-side me-2"></i> ¿Tienes auto o camioneta?</p>
+                                    <div class="row">
+                                        <div class="col-6"><button type="button" class="btn btn-lg btn-select-vivid w-100" data-auto="si" data-bs-toggle="button" autocomplete="off"><i class="fas fa-check-circle me-2"></i> Sí</button></div>
+                                        <div class="col-6"><button type="button" class="btn btn-lg btn-select-vivid w-100 active" data-auto="no" data-bs-toggle="button" autocomplete="off"><i class="fas fa-times-circle me-2"></i> No</button></div>
+                                    </div>
+                                    <div id="uso_auto_group" class="mb-4 hidden mt-3 card card-input-vivid p-3">
+                                        <label for="litros_mes" class="form-label fw-bold"><i class="fas fa-gas-pump me-2"></i> Litros (Gasolina/Diésel) consumidos al mes:</label>
+                                        <input type="number" id="litros_mes" class="form-control form-control-lg" value="100" min="0">
+                                    </div>
+                                    
+                                    <p class="form-label fw-bold mt-3"><i class="fas fa-motorcycle me-2"></i> ¿Usas moto lineal?</p>
+                                    <div class="row">
+                                        <div class="col-6"><button type="button" class="btn btn-lg btn-select-vivid w-100" data-moto="si" data-bs-toggle="button" autocomplete="off"><i class="fas fa-check-circle me-2"></i> Sí</button></div>
+                                        <div class="col-6"><button type="button" class="btn btn-lg btn-select-vivid w-100 active" data-moto="no" data-bs-toggle="button" autocomplete="off"><i class="fas fa-times-circle me-2"></i> No</button></div>
+                                    </div>
+                                    <div id="uso_moto_group" class="mb-4 hidden mt-3 card card-input-vivid p-3">
+                                        <label for="moto_km_mes" class="form-label fw-bold"><i class="fas fa-road me-2"></i> Km (aprox.) recorridos al mes en moto:</label>
+                                        <input type="number" id="moto_km_mes" class="form-control form-control-lg" value="300" min="0">
+                                    </div>
+                                    
+                                    <div class="mb-4 card card-input-vivid p-3 mt-3">
+                                        <label for="transporte_publico_veces" class="form-label fw-bold"><i class="fas fa-bus-simple me-2"></i> Veces al mes que usas transporte público/taxi:</label>
+                                        <input type="number" id="transporte_publico_veces" class="form-control form-control-lg" value="40" min="0">
+                                    </div>
+                                    
+                                    <button type="button" class="btn btn-secondary-vivid btn-animated-step" onclick="nextTab(2)"><i class="fas fa-arrow-left"></i> Anterior</button>
+                                    <button type="button" class="btn btn-primary-vivid float-end btn-animated-step" onclick="nextTab(4)">Siguiente <i class="fas fa-arrow-right"></i></button>
+                                </div>
+
+                                <div class="tab-pane hidden" data-tab="4">
+                                    <h3 class="text-success-vivid mb-4"><i class="fas fa-recycle me-2"></i> 4. Reciclaje y Finalizar</h3>
+                                    
+                                    <p class="form-label fw-bold"><i class="fas fa-recycle me-2"></i> ¿Cuál es tu nivel de reciclaje?</p>
+                                    <div class="row">
+                                        <div class="col-md-4 mb-3">
+                                            <div class="card card-select-vivid p-3 text-center active" data-reciclaje="bajo">
+                                                <i class="fas fa-times-circle fa-2x text-secondary-vivid mb-2"></i>
+                                                <p class="mb-0 fw-bold">Bajo (Casi nunca)</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <div class="card card-select-vivid p-3 text-center" data-reciclaje="medio">
+                                                <i class="fas fa-dot-circle fa-2x text-warning-vivid mb-2"></i>
+                                                <p class="mb-0 fw-bold">Medio (A veces)</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <div class="card card-select-vivid p-3 text-center" data-reciclaje="alto">
+                                                <i class="fas fa-check-circle fa-2x text-success-vivid mb-2"></i>
+                                                <p class="mb-0 fw-bold">Alto (Siempre)</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <button type="button" class="btn btn-secondary-vivid btn-animated-step mt-4" onclick="nextTab(3)"><i class="fas fa-arrow-left"></i> Anterior</button>
+                                    <button type="submit" class="btn btn-success-vivid float-end btn-animated-login mt-4"><i class="fas fa-check"></i> Finalizar y Calcular</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+
+                <section id="resultados-section" class="mb-5 hidden">
+                    <h2 class="text-primary-vivid mb-4 border-bottom pb-2"><i class="fas fa-tachometer-alt me-2"></i> Resumen Anual</h2>
+                    <div id="alerta-consumo"></div>
+                    
+                    <div class="row mb-5">
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="card card-metric-total shadow-lg p-4 h-100 text-center">
+                                <p class="text-muted fw-bold mb-1">Total de Emisiones Anuales</p>
+                                <h2 class="display-5 fw-bold text-danger-vivid" id="huellaTotal">0.00</h2>
+                                <p class="text-muted mb-0">Toneladas $\text{CO}_2$ Equivalente</p>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="card card-metric-secondary shadow p-4 h-100 text-center">
+                                <p class="text-muted fw-bold mb-1">Huella por Persona</p>
+                                <h2 class="display-5 fw-bold text-info-vivid" id="huellaPorPersona">0.00</h2>
+                                <p class="text-muted mb-0">Toneladas $\text{CO}_2$ Equivalente/persona</p>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-4 col-md-12 mb-4">
+                            <div class="card shadow p-4 h-100">
+                                <canvas id="huellaPieChart"></canvas> 
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3 class="text-success-vivid mb-4 border-bottom pb-2"><i class="fas fa-chart-bar me-2"></i> Desglose de Emisiones (Mensual)</h3>
+                    <div class="card shadow-lg p-4 bg-white">
+                        <p class="text-muted text-center">Este gráfico mostraría tu consumo mensual desglosado si tuviéramos 12 puntos de datos. Por ahora, aquí va el placeholder.</p>
+                        <img src="image_c4ee53.jpg" alt="Placeholder gráfico de barras mensual" class="img-fluid rounded-3 opacity-50">
+                    </div>
+                </section>
+
+                <section id="recomendaciones-section" class="mb-5 hidden">
+                    <div class="card shadow-lg p-4 bg-white">
+                        <h2 class="card-title text-success-vivid mb-4 border-bottom pb-2"><i class="fas fa-lightbulb me-2"></i> Consejos Verdes para <span id="recomUser"></span></h2>
+                        <p class="lead text-muted text-center">Pequeñas acciones generan grandes cambios.</p>
+                        
+                        <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
+                            <div class="col">
+                                <div class="card card-recommendation p-3 text-center h-100">
+                                    <i class="fas fa-lightbulb fa-3x text-warning-vivid mb-2"></i>
+                                    <h5 class="fw-bold">Ahorra Energía</h5>
+                                    <p class="text-sm">Desconecta aparatos electrónicos y usa la luz natural. ¡Considera paneles solares si es viable!</p>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card card-recommendation p-3 text-center h-100">
+                                    <i class="fas fa-bus-simple fa-3x text-danger-vivid mb-2"></i>
+                                    <h5 class="fw-bold">Movilidad Consciente</h5>
+                                    <p class="text-sm">Prefiere caminar o usar transporte público. Si usas auto, mantén el motor afinado.</p>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card card-recommendation p-3 text-center h-100">
+                                    <i class="fas fa-recycle fa-3x text-success-vivid mb-2"></i>
+                                    <h5 class="fw-bold">Reduce y Recicla</h5>
+                                    <p class="text-sm">Separa tus residuos (plástico, papel, vidrio) y reduce el uso de envases de un solo uso.</p>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card card-recommendation p-3 text-center h-100">
+                                    <i class="fas fa-fire-extinguisher fa-3x text-info-vivid mb-2"></i>
+                                    <h5 class="fw-bold">Uso Eficiente de Gas</h5>
+                                    <p class="text-sm">Si usas GLP o GN, cocina con la olla tapada para reducir el tiempo y consumo.</p>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card card-recommendation p-3 text-center h-100">
+                                    <i class="fas fa-tint fa-3x text-primary-vivid mb-2"></i>
+                                    <h5 class="fw-bold">Cuidado del Agua</h5>
+                                    <p class="text-sm">Repara fugas inmediatamente. Un inodoro que gotea puede gastar hasta 200,000 litros al año.</p>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card card-recommendation p-3 text-center h-100">
+                                    <i class="fas fa-utensils fa-3x text-secondary-vivid mb-2"></i>
+                                    <h5 class="fw-bold">Dieta Sostenible</h5>
+                                    <p class="text-sm">Intenta reducir el consumo de carne (especialmente roja) una o dos veces por semana.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+        
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
